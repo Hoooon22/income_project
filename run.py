@@ -52,14 +52,16 @@ while hasFrame:
     points, _ = detector(image)
     if points is not None:
         print("===============")
+        i = 0
         for point in points:
             x, y = point
             cv2.circle(frame, (int(x), int(y)), THICKNESS * 2, POINT_COLOR, THICKNESS)
+            print(i, " : " ,(int(x), int(y)))
+            i = i + 1
         for connection in connections:
             x0, y0 = points[connection[0]]
             x1, y1 = points[connection[1]]
             cv2.line(frame, (int(x0), int(y0)), (int(x1), int(y1)), CONNECTION_COLOR, THICKNESS)
-            print((int(x0), int(y0)), " / " , (int(x1), int(y1)))
         print("===============")
     cv2.imshow(WINDOW, frame)
     hasFrame, frame = capture.read()
