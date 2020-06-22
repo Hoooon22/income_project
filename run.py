@@ -54,20 +54,38 @@ while hasFrame:
         print("===============")
         i = 0
         j = 0
+        tmp_x = [0 for p in range(21)]
+        tmp_y = [0 for p in range(21)]
         for point in points:
             x, y = point
             cv2.circle(frame, (int(x), int(y)), THICKNESS * 2, POINT_COLOR, THICKNESS)
+            tmp_x[i] = int(x)
+            tmp_y[i] = int(y)
             # point
             # print(i, " : " ,(int(x), int(y)))
-            # i = i + 1
+            i = i + 1
         for connection in connections:
             x0, y0 = points[connection[0]]
             x1, y1 = points[connection[1]]
             cv2.line(frame, (int(x0), int(y0)), (int(x1), int(y1)), CONNECTION_COLOR, THICKNESS)
             # connection
-            print(j, " : " ,(int(x0), int(y0)), " / ", (int(x1), int(y1)))
-            j = j + 1
+            # print(j, " : " ,(int(x0), int(y0)), " / ", (int(x1), int(y1)))
+            # j = j + 1
         print("===============")
+        # extract number - right hand
+        number = 0
+        if tmp_x[4] > tmp_x[5]:
+            number = number + 1
+        if tmp_y[5] > tmp_y[8]:
+            number = number + 1
+        if tmp_y[9] > tmp_y[12]:
+            number = number + 1
+        if tmp_y[13] > tmp_y[16]:
+            number = number + 1
+        if tmp_y[17] > tmp_y[20]:
+            number = number + 1
+        print("Number : ", number)
+
     cv2.imshow(WINDOW, frame)
     hasFrame, frame = capture.read()
     key = cv2.waitKey(1)
