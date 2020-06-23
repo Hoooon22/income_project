@@ -46,6 +46,11 @@ detector = HandTracker(
     box_shift=0.2,
     box_enlarge=1.3
 )
+# need adding
+live_count = 0
+pre_num = [0, 0, 0, 0, 0]
+breaker = 0
+sum = 0
 
 while hasFrame:
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -84,7 +89,40 @@ while hasFrame:
             number = number + 1
         if tmp_y[17] > tmp_y[20]:
             number = number + 1
-        print("Number : ", number)
+        str1 = "Number : %d" % number
+        cv2.putText(frame, str1, (100, 100), cv2.FONT_ITALIC, 1, (0, 255, 0))
+
+        #add numbers
+        temp = [0, 0, 0, 0, 0]
+        p = 0
+        for var in pre_num: #shift
+            if p == 0:
+                temp[p+1] = pre_num[p]
+                p = p+1
+            elif p != 4:
+                temp[p+1] = pre_num[p]
+                pre_num[p] = temp[p]
+                p = p + 1
+            else:
+                pre_num[p] = temp[p]
+        pre_num[0] = number
+        for var in pre_num:
+            print(var)
+        print("=========")
+        # Check
+        for k in range(0, 3):
+            if pre_num[k] != pre_num[k+1]:
+                breaker = 0
+                break
+            else:
+                breaker = 1
+        if breaker == 1:
+            sum += number
+
+        str2 = "sum : %d" % sum
+        cv2.putText(frame, str2, (100, 200), cv2.FONT_ITALIC, 1, (255, 0, 0))
+
+
 
     cv2.imshow(WINDOW, frame)
     hasFrame, frame = capture.read()
