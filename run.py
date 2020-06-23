@@ -118,6 +118,7 @@ while hasFrame:
                 breaker = 1
         if breaker == 1:
             sum += number
+            pre_num[0] = 0
 
         str2 = "sum : %d" % sum
         cv2.putText(frame, str2, (100, 200), cv2.FONT_ITALIC, 1, (255, 0, 0))
